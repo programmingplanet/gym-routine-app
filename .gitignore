@@ -8,12 +8,12 @@
 !/.yarn/releases
 !/.yarn/plugins
 !/.yarn/sdks
-
+node_modules
 # testing
 /coverage
 
 # next.js
-/.next/
+.next/
 /out/
 public/sitemap.xml
 .vercel
