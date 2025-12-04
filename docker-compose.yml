@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  gym-routine-app:
+    image: registry.programmingplanet.net/gym-routine-app:1.0.0
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    container_name: gym-routine-app
