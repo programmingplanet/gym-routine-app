@@ -21,13 +21,18 @@ export interface Exercise {
   id: string;
   name: string;
   imageUrl: string;
-  muscleGroup: string;
+  muscleGroups: string[]; // Array de grupos musculares
   description?: string;
-  createdBy?: string; // userId del creador (undefined = ejercicio global)
-  isShared?: boolean; // Si está compartido con otros usuarios
-  sharedWith?: string[]; // IDs de usuarios con los que se compartió
+  createdBy?: string; // userId del creador (undefined = ejercicio global/público)
+  isShared?: boolean; // Si es un ejercicio público/compartido con todos
   equipment?: string[]; // Equipamiento necesario
   createdAt?: string;
+}
+
+export interface MuscleGroup {
+  id: string;
+  name: string;
+  description?: string;
 }
 
 export interface RoutineExercise {

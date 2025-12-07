@@ -629,5 +629,35 @@ export const api = {
     if (typeof window === 'undefined') return [];
     const sessionsStr = localStorage.getItem('workoutSessions');
     return sessionsStr ? JSON.parse(sessionsStr) : [];
+  },
+
+  // Muscle Groups
+  async getMuscleGroups(): Promise<import('@/types').MuscleGroup[]> {
+    if (USE_API) {
+      try {
+        return apiCall<import('@/types').MuscleGroup[]>('/muscle-groups/');
+      } catch (error) {
+        console.error('Get muscle groups error:', error);
+        // Return default muscle groups on error
+        return this.getDefaultMuscleGroups();
+      }
+    } else {
+      return this.getDefaultMuscleGroups();
+    }
+  },
+
+  getDefaultMuscleGroups(): import('@/types').MuscleGroup[] {
+    return [
+      { id: 'pecho', name: 'Pecho' },
+      { id: 'espalda', name: 'Espalda' },
+      { id: 'hombros', name: 'Hombros' },
+      { id: 'biceps', name: 'Bíceps' },
+      { id: 'triceps', name: 'Tríceps' },
+      { id: 'piernas', name: 'Piernas' },
+      { id: 'gluteos', name: 'Glúteos' },
+      { id: 'core', name: 'Core' },
+      { id: 'abdomen', name: 'Abdomen' },
+      { id: 'cardio', name: 'Cardio' },
+    ];
   }
 };
