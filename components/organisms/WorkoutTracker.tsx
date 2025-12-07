@@ -120,7 +120,9 @@ export const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
               {/* Exercise Info */}
               <div className="mb-6">
                 <div className="flex items-center gap-2 mb-4">
-                  <Badge variant="info">{selectedExercise.muscleGroup}</Badge>
+                  {selectedExercise.muscleGroups && selectedExercise.muscleGroups.map((muscleGroup) => (
+                    <Badge key={muscleGroup} variant="info">{muscleGroup}</Badge>
+                  ))}
                   <Badge variant="primary">{selectedRoutineEx.sets} series</Badge>
                   <Badge variant="success">{selectedRoutineEx.reps} reps</Badge>
                 </div>

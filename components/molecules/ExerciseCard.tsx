@@ -34,7 +34,9 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({ exercise, routineExe
           {exercise.name}
         </h3>
         <div className="flex items-center gap-2 flex-wrap">
-          <Badge variant="info">{exercise.muscleGroup}</Badge>
+          {exercise.muscleGroups?.map((mg) => (
+            <Badge key={mg} variant="info">{mg}</Badge>
+          ))}
           {routineExercise && (
             <>
               <Badge variant="primary">{routineExercise.sets} series</Badge>

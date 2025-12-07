@@ -158,13 +158,21 @@ export default function SettingsPage() {
   const handleShareExercise = async (exerciseId: string) => {
     if (user) {
       try {
-        // Por ahora compartir con todos los usuarios (simplificado)
-        const allUsers = ['1', '2']; // Lesly y John
-        const otherUsers = allUsers.filter(id => id !== user.id);
-        await api.shareExercise(exerciseId, otherUsers);
-        success('Ejercicio compartido exitosamente');
+        const exercise = exercises.find(e => e.id === exerciseId);
+        if (!exercise) return;
+
+        // Toggle isShared to make exercise public/private
+        const updatedExercise = await api.updateExercise(exerciseId, {
+          ...exercise,
+          isShared: !exercise.isShared
+        });
+
+        if (updatedExercise) {
+          setExercises(exercises.map(e => e.id === exerciseId ? updatedExercise : e));
+          success(updatedExercise.isShared ? 'Ejercicio compartido públicamente' : 'Ejercicio ahora es privado');
+        }
       } catch (err) {
-        showError('Error al compartir el ejercicio');
+        showError('Error al actualizar el ejercicio');
       }
     }
   };
@@ -321,7 +329,7 @@ export default function SettingsPage() {
                         {exercise.name}
                       </h3>
                       <p className="text-sm text-gray-600 dark:text-gray-400">
-                        {exercise.muscleGroup}
+                        {exercise.muscleGroups?.join(', ')}
                       </p>
                       <div className="flex gap-2 mt-1">
                         {exercise.isShared && (

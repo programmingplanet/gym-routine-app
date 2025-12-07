@@ -120,9 +120,9 @@ export const api = {
       // Fallback to local data
       const customExercises = this.getCustomExercisesFromStorage();
       if (userId) {
+        // Return user's own exercises + system exercises + public shared exercises
         const userExercises = customExercises.filter(e =>
-          e.createdBy === userId ||
-          (e.isShared && e.sharedWith?.includes(userId))
+          e.createdBy === userId || e.isShared
         );
         return [...exercisesCatalog, ...userExercises];
       }
@@ -234,24 +234,34 @@ export const api = {
     }
   },
 
-  async shareExercise(exerciseId: string, targetUserIds: string[]): Promise<boolean> {
-    // TODO: Reemplazar con POST /api/exercises/${exerciseId}/share
-    const customExercises = this.getCustomExercisesFromStorage();
-    const exerciseIndex = customExercises.findIndex(e => e.id === exerciseId);
+  async shareExercise(exerciseId: string, isShared: boolean): Promise<boolean> {
+    // Share exercise by toggling isShared flag
+    if (USE_API) {
+      try {
+        await this.updateExercise(exerciseId, { isShared });
+        return true;
+      } catch (error) {
+        console.error('Share exercise error:', error);
+        return false;
+      }
+    } else {
+      // Fallback to local data
+      const customExercises = this.getCustomExercisesFromStorage();
+      const exerciseIndex = customExercises.findIndex(e => e.id === exerciseId);
 
-    if (exerciseIndex === -1) return false;
+      if (exerciseIndex === -1) return false;
 
-    customExercises[exerciseIndex] = {
-      ...customExercises[exerciseIndex],
-      isShared: true,
-      sharedWith: [...(customExercises[exerciseIndex].sharedWith || []), ...targetUserIds]
-    };
+      customExercises[exerciseIndex] = {
+        ...customExercises[exerciseIndex],
+        isShared
+      };
 
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('customExercises', JSON.stringify(customExercises));
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('customExercises', JSON.stringify(customExercises));
+      }
+
+      return true;
     }
-
-    return true;
   },
 
   getCustomExercisesFromStorage(): Exercise[] {

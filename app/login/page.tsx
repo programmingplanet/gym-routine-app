@@ -58,7 +58,7 @@ export default function LoginPage() {
             label="Usuario"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            placeholder="lesly o john"
+            placeholder="user"
             required
             autoFocus
           />
@@ -86,16 +86,6 @@ export default function LoginPage() {
             {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
           </Button>
         </form>
-
-        <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
-          <p className="text-sm text-blue-800 dark:text-blue-200 font-medium mb-2">
-            Usuarios de prueba:
-          </p>
-          <ul className="text-sm text-blue-700 dark:text-blue-300 space-y-1">
-            <li>• Usuario: lesly | Contraseña: lesly123</li>
-            <li>• Usuario: john | Contraseña: john123</li>
-          </ul>
-        </div>
       </Card>
     </div>
   );

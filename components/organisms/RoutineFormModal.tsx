@@ -33,7 +33,7 @@ export const RoutineFormModal: React.FC<RoutineFormModalProps> = ({
 
   const filteredExercises = exercises.filter(ex =>
     ex.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    ex.muscleGroup.toLowerCase().includes(searchTerm.toLowerCase())
+    ex.muscleGroups?.some(mg => mg.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   const handleAddExercise = (exercise: Exercise) => {
@@ -173,9 +173,11 @@ export const RoutineFormModal: React.FC<RoutineFormModalProps> = ({
                             {exercise.name}
                           </p>
                           <div className="flex items-center gap-2 mt-1">
-                            <Badge variant="info" className="text-xs">
-                              {exercise.muscleGroup}
-                            </Badge>
+                            {exercise.muscleGroups?.map((mg) => (
+                              <Badge key={mg} variant="info" className="text-xs">
+                                {mg}
+                              </Badge>
+                            ))}
                             {sharedByName && (
                               <Badge variant="info" className="text-xs">
                                 Por {sharedByName}
