@@ -7,9 +7,9 @@ import { Header } from '@/components/organisms/Header';
 import { WorkoutTracker } from '@/components/organisms/WorkoutTracker';
 import { Button } from '@/components/atoms/Button';
 import { Badge } from '@/components/atoms/Badge';
-import { Routine, Progress } from '@/types';
+import { Routine, Progress, Exercise } from '@/types';
 import { api } from '@/lib/api';
-import { ArrowLeft, History } from 'lucide-react';
+import { ArrowLeft, History, CheckCircle } from 'lucide-react';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale/es';
 
@@ -22,6 +22,7 @@ export default function RoutinePage() {
   const [routine, setRoutine] = useState<Routine | null>(null);
   const [showHistory, setShowHistory] = useState(false);
   const [progressHistory, setProgressHistory] = useState<Progress[]>([]);
+  const [exercisesCatalog, setExercisesCatalog] = useState<Exercise[]>([]);
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -30,13 +31,18 @@ export default function RoutinePage() {
   }, [user, isLoading, router]);
 
   useEffect(() => {
-    const loadRoutine = async () => {
-      const data = await api.getRoutineById(routineId);
-      if (data) {
-        setRoutine(data);
+    const loadData = async () => {
+      const [routineData, exercises] = await Promise.all([
+        api.getRoutineById(routineId),
+        api.getExercises()
+      ]);
+
+      if (routineData) {
+        setRoutine(routineData);
       }
+      setExercisesCatalog(exercises);
     };
-    loadRoutine();
+    loadData();
   }, [routineId]);
 
   useEffect(() => {
@@ -65,6 +71,50 @@ export default function RoutinePage() {
 
     const updatedProgress = await api.getProgress(user.id);
     setProgressHistory(updatedProgress.filter(p => p.routineId === routineId));
+  };
+
+  const handleMarkAsCompleted = async () => {
+    if (!user || !routine) return;
+
+    if (routine.completed) {
+      await api.unmarkRoutineAsCompleted(routineId);
+    } else {
+      await api.markRoutineAsCompleted(routineId, user.id);
+    }
+
+    // Recargar rutina
+    const updatedRoutine = await api.getRoutineById(routineId);
+    if (updatedRoutine) {
+      setRoutine(updatedRoutine);
+    }
+  };
+
+  const handleMarkExerciseComplete = async (exerciseId: string, completed: boolean) => {
+    if (!user) return;
+
+    if (completed) {
+      await api.markExerciseAsCompleted(routineId, exerciseId, user.id);
+    } else {
+      await api.unmarkExerciseAsCompleted(routineId, exerciseId);
+    }
+
+    // Recargar rutina
+    const updatedRoutine = await api.getRoutineById(routineId);
+    if (updatedRoutine) {
+      setRoutine(updatedRoutine);
+    }
+  };
+
+  const handleDeleteExercise = async (exerciseId: string) => {
+    if (!user || !routine) return;
+
+    await api.removeExerciseFromRoutine(routineId, exerciseId, user.id);
+
+    // Recargar rutina
+    const updatedRoutine = await api.getRoutineById(routineId);
+    if (updatedRoutine) {
+      setRoutine(updatedRoutine);
+    }
   };
 
   if (isLoading || !user || !routine) {
@@ -98,19 +148,35 @@ export default function RoutinePage() {
                   Día {routine.dayNumber}
                 </h1>
                 <Badge variant="primary">{routine.exercises.length} ejercicios</Badge>
+                {routine.completed && (
+                  <Badge variant="success">
+                    <CheckCircle className="w-4 h-4 mr-1 inline" />
+                    Completada
+                  </Badge>
+                )}
               </div>
               <h2 className="text-xl text-gray-600 dark:text-gray-400">
                 {routine.dayName}
               </h2>
             </div>
 
-            <Button
-              variant="secondary"
-              onClick={() => setShowHistory(!showHistory)}
-            >
-              <History className="w-4 h-4 mr-2" />
-              {showHistory ? 'Ocultar Historial' : 'Ver Historial'}
-            </Button>
+            <div className="flex gap-3">
+              <Button
+                variant={routine.completed ? 'secondary' : 'primary'}
+                onClick={handleMarkAsCompleted}
+              >
+                <CheckCircle className="w-4 h-4 mr-2" />
+                {routine.completed ? 'Desmarcar' : 'Marcar como Completada'}
+              </Button>
+
+              <Button
+                variant="secondary"
+                onClick={() => setShowHistory(!showHistory)}
+              >
+                <History className="w-4 h-4 mr-2" />
+                {showHistory ? 'Ocultar' : 'Historial'}
+              </Button>
+            </div>
           </div>
 
           {showHistory && progressHistory.length > 0 && (
@@ -123,7 +189,7 @@ export default function RoutinePage() {
                   .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
                   .slice(0, 20)
                   .map((progress) => {
-                    const exercise = routine.exercises.find(e => e.id === progress.exerciseId);
+                    const exercise = exercisesCatalog.find(e => e.id === progress.exerciseId);
                     return (
                       <div
                         key={progress.id}
@@ -154,9 +220,13 @@ export default function RoutinePage() {
         </div>
 
         <WorkoutTracker
-          exercises={routine.exercises}
+          routineExercises={routine.exercises}
+          exercisesCatalog={exercisesCatalog}
           onSaveProgress={handleSaveProgress}
+          onMarkExerciseComplete={handleMarkExerciseComplete}
+          onDeleteExercise={handleDeleteExercise}
           routineId={routine.id}
+          isCustomRoutine={routine.isCustom}
         />
       </main>
     </div>

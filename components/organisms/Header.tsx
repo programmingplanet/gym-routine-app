@@ -1,12 +1,14 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/AuthContext';
 import { Button } from '../atoms/Button';
-import { Moon, Sun, Dumbbell, LogOut, User } from 'lucide-react';
+import { Moon, Sun, Dumbbell, LogOut, User, Settings } from 'lucide-react';
 
 export const Header: React.FC = () => {
   const { user, logout } = useAuth();
+  const router = useRouter();
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
@@ -39,14 +41,25 @@ export const Header: React.FC = () => {
             </h1>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 md:gap-4">
             {user && (
               <div className="flex items-center gap-2 px-3 py-1.5 bg-gray-100 dark:bg-gray-700 rounded-lg">
                 <User className="w-4 h-4 text-gray-600 dark:text-gray-300" />
-                <span className="text-sm font-medium text-gray-900 dark:text-white">
+                <span className="text-sm font-medium text-gray-900 dark:text-white hidden sm:inline">
                   {user.name}
                 </span>
               </div>
+            )}
+
+            {user && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => router.push('/settings')}
+                className="p-2"
+              >
+                <Settings className="w-5 h-5" />
+              </Button>
             )}
 
             <Button
@@ -63,9 +76,14 @@ export const Header: React.FC = () => {
             </Button>
 
             {user && (
-              <Button variant="danger" size="sm" onClick={logout}>
+              <Button variant="danger" size="sm" onClick={logout} className="hidden sm:flex">
                 <LogOut className="w-4 h-4 mr-2" />
                 Salir
+              </Button>
+            )}
+            {user && (
+              <Button variant="danger" size="sm" onClick={logout} className="sm:hidden p-2">
+                <LogOut className="w-4 h-4" />
               </Button>
             )}
           </div>

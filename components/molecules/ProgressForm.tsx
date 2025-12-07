@@ -3,10 +3,11 @@
 import React, { useState } from 'react';
 import { Input } from '../atoms/Input';
 import { Button } from '../atoms/Button';
-import { Exercise, Progress } from '@/types';
+import { Exercise, RoutineExercise, Progress } from '@/types';
 
 interface ProgressFormProps {
   exercise: Exercise;
+  routineExercise: RoutineExercise;
   onSave: (data: Omit<Progress, 'id' | 'userId' | 'exerciseId' | 'routineId' | 'date'>) => void;
   onCancel: () => void;
   initialData?: {
@@ -19,13 +20,14 @@ interface ProgressFormProps {
 
 export const ProgressForm: React.FC<ProgressFormProps> = ({
   exercise,
+  routineExercise,
   onSave,
   onCancel,
   initialData
 }) => {
   const [weight, setWeight] = useState(initialData?.weight?.toString() || '');
   const [reps, setReps] = useState(initialData?.reps?.toString() || '');
-  const [sets, setSets] = useState(initialData?.sets?.toString() || exercise.sets.toString());
+  const [sets, setSets] = useState(initialData?.sets?.toString() || routineExercise.sets.toString());
   const [notes, setNotes] = useState(initialData?.notes || '');
 
   const handleSubmit = (e: React.FormEvent) => {

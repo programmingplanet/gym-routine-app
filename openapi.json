@@ -1,0 +1,1664 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Gym Routine API",
+        "description": "API for managing gym routines, exercises, and workout progress",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/users/login": {
+            "post": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "Login",
+                "operationId": "login_users_login_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoginResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/": {
+            "get": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "List Users",
+                "operationId": "list_users_users__get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/User"
+                                    },
+                                    "type": "array",
+                                    "title": "Response List Users Users  Get"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "Create User",
+                "operationId": "create_user_users__post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{user_id}": {
+            "get": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "Get User",
+                "operationId": "get_user_users__user_id__get",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "User Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "Update User",
+                "operationId": "update_user_users__user_id__put",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "User Id"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "Delete User",
+                "operationId": "delete_user_users__user_id__delete",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "User Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful Response"
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/exercises/": {
+            "get": {
+                "tags": [
+                    "exercises"
+                ],
+                "summary": "List Exercises",
+                "operationId": "list_exercises_exercises__get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/Exercise"
+                                    },
+                                    "type": "array",
+                                    "title": "Response List Exercises Exercises  Get"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "exercises"
+                ],
+                "summary": "Create Exercise",
+                "operationId": "create_exercise_exercises__post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Exercise"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Exercise"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/exercises/user/{user_id}": {
+            "get": {
+                "tags": [
+                    "exercises"
+                ],
+                "summary": "List User Exercises",
+                "operationId": "list_user_exercises_exercises_user__user_id__get",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "User Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Exercise"
+                                    },
+                                    "title": "Response List User Exercises Exercises User  User Id  Get"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/exercises/shared/{user_id}": {
+            "get": {
+                "tags": [
+                    "exercises"
+                ],
+                "summary": "List Shared Exercises",
+                "operationId": "list_shared_exercises_exercises_shared__user_id__get",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "User Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Exercise"
+                                    },
+                                    "title": "Response List Shared Exercises Exercises Shared  User Id  Get"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/exercises/{exercise_id}": {
+            "get": {
+                "tags": [
+                    "exercises"
+                ],
+                "summary": "Get Exercise",
+                "operationId": "get_exercise_exercises__exercise_id__get",
+                "parameters": [
+                    {
+                        "name": "exercise_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Exercise Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Exercise"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "exercises"
+                ],
+                "summary": "Update Exercise",
+                "operationId": "update_exercise_exercises__exercise_id__put",
+                "parameters": [
+                    {
+                        "name": "exercise_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Exercise Id"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Exercise"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Exercise"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "exercises"
+                ],
+                "summary": "Delete Exercise",
+                "operationId": "delete_exercise_exercises__exercise_id__delete",
+                "parameters": [
+                    {
+                        "name": "exercise_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Exercise Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful Response"
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/routines/": {
+            "post": {
+                "tags": [
+                    "routines"
+                ],
+                "summary": "Create Routine",
+                "operationId": "create_routine_routines__post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Routine"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Routine"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/routines/user/{user_id}": {
+            "get": {
+                "tags": [
+                    "routines"
+                ],
+                "summary": "List User Routines",
+                "operationId": "list_user_routines_routines_user__user_id__get",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "User Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Routine"
+                                    },
+                                    "title": "Response List User Routines Routines User  User Id  Get"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/routines/{routine_id}": {
+            "get": {
+                "tags": [
+                    "routines"
+                ],
+                "summary": "Get Routine",
+                "operationId": "get_routine_routines__routine_id__get",
+                "parameters": [
+                    {
+                        "name": "routine_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Routine Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Routine"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "routines"
+                ],
+                "summary": "Update Routine",
+                "operationId": "update_routine_routines__routine_id__put",
+                "parameters": [
+                    {
+                        "name": "routine_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Routine Id"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Routine"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Routine"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "routines"
+                ],
+                "summary": "Delete Routine",
+                "operationId": "delete_routine_routines__routine_id__delete",
+                "parameters": [
+                    {
+                        "name": "routine_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Routine Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful Response"
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/progress/": {
+            "post": {
+                "tags": [
+                    "progress"
+                ],
+                "summary": "Create Progress",
+                "operationId": "create_progress_progress__post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Progress"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Progress"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/progress/user/{user_id}": {
+            "get": {
+                "tags": [
+                    "progress"
+                ],
+                "summary": "List User Progress",
+                "operationId": "list_user_progress_progress_user__user_id__get",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "User Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Progress"
+                                    },
+                                    "title": "Response List User Progress Progress User  User Id  Get"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/progress/exercise/{exercise_id}": {
+            "get": {
+                "tags": [
+                    "progress"
+                ],
+                "summary": "List Exercise Progress",
+                "operationId": "list_exercise_progress_progress_exercise__exercise_id__get",
+                "parameters": [
+                    {
+                        "name": "exercise_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Exercise Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Progress"
+                                    },
+                                    "title": "Response List Exercise Progress Progress Exercise  Exercise Id  Get"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/progress/{progress_id}": {
+            "get": {
+                "tags": [
+                    "progress"
+                ],
+                "summary": "Get Progress",
+                "operationId": "get_progress_progress__progress_id__get",
+                "parameters": [
+                    {
+                        "name": "progress_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Progress Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Progress"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "progress"
+                ],
+                "summary": "Delete Progress",
+                "operationId": "delete_progress_progress__progress_id__delete",
+                "parameters": [
+                    {
+                        "name": "progress_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Progress Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful Response"
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/workout-sessions/": {
+            "post": {
+                "tags": [
+                    "workout-sessions"
+                ],
+                "summary": "Create Session",
+                "operationId": "create_session_workout_sessions__post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/WorkoutSession"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WorkoutSession"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/workout-sessions/user/{user_id}": {
+            "get": {
+                "tags": [
+                    "workout-sessions"
+                ],
+                "summary": "List User Sessions",
+                "operationId": "list_user_sessions_workout_sessions_user__user_id__get",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "User Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/WorkoutSession"
+                                    },
+                                    "title": "Response List User Sessions Workout Sessions User  User Id  Get"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/workout-sessions/{session_id}": {
+            "get": {
+                "tags": [
+                    "workout-sessions"
+                ],
+                "summary": "Get Session",
+                "operationId": "get_session_workout_sessions__session_id__get",
+                "parameters": [
+                    {
+                        "name": "session_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Session Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WorkoutSession"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "workout-sessions"
+                ],
+                "summary": "Update Session",
+                "operationId": "update_session_workout_sessions__session_id__put",
+                "parameters": [
+                    {
+                        "name": "session_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Session Id"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/WorkoutSession"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WorkoutSession"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "workout-sessions"
+                ],
+                "summary": "Delete Session",
+                "operationId": "delete_session_workout_sessions__session_id__delete",
+                "parameters": [
+                    {
+                        "name": "session_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Session Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful Response"
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/": {
+            "get": {
+                "tags": [
+                    "health"
+                ],
+                "summary": "Health Check",
+                "operationId": "health_check__get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Exercise": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "Id"
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "Name"
+                    },
+                    "imageUrl": {
+                        "type": "string",
+                        "title": "Imageurl"
+                    },
+                    "muscleGroup": {
+                        "type": "string",
+                        "title": "Musclegroup"
+                    },
+                    "description": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Description"
+                    },
+                    "createdBy": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Createdby"
+                    },
+                    "isShared": {
+                        "anyOf": [
+                            {
+                                "type": "boolean"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Isshared",
+                        "default": false
+                    },
+                    "sharedWith": {
+                        "anyOf": [
+                            {
+                                "items": {
+                                    "type": "string"
+                                },
+                                "type": "array"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Sharedwith"
+                    },
+                    "equipment": {
+                        "anyOf": [
+                            {
+                                "items": {
+                                    "type": "string"
+                                },
+                                "type": "array"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Equipment"
+                    },
+                    "createdAt": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Createdat"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "name",
+                    "imageUrl",
+                    "muscleGroup"
+                ],
+                "title": "Exercise",
+                "example": {
+                    "description": "Classic chest exercise",
+                    "equipment": [
+                        "Barbell",
+                        "Bench"
+                    ],
+                    "id": "exercise123",
+                    "imageUrl": "https://example.com/bench-press.jpg",
+                    "muscleGroup": "Chest",
+                    "name": "Bench Press"
+                }
+            },
+            "HTTPValidationError": {
+                "properties": {
+                    "detail": {
+                        "items": {
+                            "$ref": "#/components/schemas/ValidationError"
+                        },
+                        "type": "array",
+                        "title": "Detail"
+                    }
+                },
+                "type": "object",
+                "title": "HTTPValidationError"
+            },
+            "LoginRequest": {
+                "properties": {
+                    "username": {
+                        "type": "string",
+                        "title": "Username"
+                    },
+                    "password": {
+                        "type": "string",
+                        "title": "Password"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "username",
+                    "password"
+                ],
+                "title": "LoginRequest"
+            },
+            "LoginResponse": {
+                "properties": {
+                    "access_token": {
+                        "type": "string",
+                        "title": "Access Token"
+                    },
+                    "token_type": {
+                        "type": "string",
+                        "title": "Token Type"
+                    },
+                    "user_id": {
+                        "type": "string",
+                        "title": "User Id"
+                    },
+                    "username": {
+                        "type": "string",
+                        "title": "Username"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "access_token",
+                    "token_type",
+                    "user_id",
+                    "username"
+                ],
+                "title": "LoginResponse"
+            },
+            "Progress": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "Id"
+                    },
+                    "userId": {
+                        "type": "string",
+                        "title": "Userid"
+                    },
+                    "exerciseId": {
+                        "type": "string",
+                        "title": "Exerciseid"
+                    },
+                    "routineId": {
+                        "type": "string",
+                        "title": "Routineid"
+                    },
+                    "date": {
+                        "type": "string",
+                        "title": "Date"
+                    },
+                    "weight": {
+                        "type": "number",
+                        "title": "Weight"
+                    },
+                    "reps": {
+                        "type": "integer",
+                        "title": "Reps"
+                    },
+                    "sets": {
+                        "type": "integer",
+                        "title": "Sets"
+                    },
+                    "notes": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Notes"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "userId",
+                    "exerciseId",
+                    "routineId",
+                    "date",
+                    "weight",
+                    "reps",
+                    "sets"
+                ],
+                "title": "Progress"
+            },
+            "Routine": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "Id"
+                    },
+                    "userId": {
+                        "type": "string",
+                        "title": "Userid"
+                    },
+                    "dayNumber": {
+                        "type": "integer",
+                        "title": "Daynumber"
+                    },
+                    "dayName": {
+                        "type": "string",
+                        "title": "Dayname"
+                    },
+                    "exercises": {
+                        "items": {
+                            "$ref": "#/components/schemas/RoutineExercise"
+                        },
+                        "type": "array",
+                        "title": "Exercises"
+                    },
+                    "completed": {
+                        "anyOf": [
+                            {
+                                "type": "boolean"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Completed",
+                        "default": false
+                    },
+                    "lastCompletedDate": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Lastcompleteddate"
+                    },
+                    "isCustom": {
+                        "anyOf": [
+                            {
+                                "type": "boolean"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Iscustom",
+                        "default": false
+                    },
+                    "createdAt": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Createdat"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "userId",
+                    "dayNumber",
+                    "dayName",
+                    "exercises"
+                ],
+                "title": "Routine",
+                "example": {
+                    "dayName": "Chest Day",
+                    "dayNumber": 1,
+                    "exercises": [
+                        {
+                            "exerciseId": "exercise123",
+                            "order": 1,
+                            "reps": "8-12",
+                            "sets": 3
+                        }
+                    ],
+                    "id": "routine123",
+                    "userId": "user123"
+                }
+            },
+            "RoutineExercise": {
+                "properties": {
+                    "exerciseId": {
+                        "type": "string",
+                        "title": "Exerciseid"
+                    },
+                    "sets": {
+                        "type": "integer",
+                        "title": "Sets"
+                    },
+                    "reps": {
+                        "type": "string",
+                        "title": "Reps"
+                    },
+                    "order": {
+                        "type": "integer",
+                        "title": "Order"
+                    },
+                    "completed": {
+                        "anyOf": [
+                            {
+                                "type": "boolean"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Completed",
+                        "default": false
+                    },
+                    "completedDate": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Completeddate"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "exerciseId",
+                    "sets",
+                    "reps",
+                    "order"
+                ],
+                "title": "RoutineExercise"
+            },
+            "User": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "Id"
+                    },
+                    "username": {
+                        "type": "string",
+                        "title": "Username"
+                    },
+                    "password": {
+                        "type": "string",
+                        "title": "Password"
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "Name"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "username",
+                    "password",
+                    "name"
+                ],
+                "title": "User",
+                "example": {
+                    "id": "user123",
+                    "name": "John Doe",
+                    "password": "hashed_password",
+                    "username": "john_doe"
+                }
+            },
+            "ValidationError": {
+                "properties": {
+                    "loc": {
+                        "items": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "integer"
+                                }
+                            ]
+                        },
+                        "type": "array",
+                        "title": "Location"
+                    },
+                    "msg": {
+                        "type": "string",
+                        "title": "Message"
+                    },
+                    "type": {
+                        "type": "string",
+                        "title": "Error Type"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "loc",
+                    "msg",
+                    "type"
+                ],
+                "title": "ValidationError"
+            },
+            "WorkoutSession": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "Id"
+                    },
+                    "userId": {
+                        "type": "string",
+                        "title": "Userid"
+                    },
+                    "routineId": {
+                        "type": "string",
+                        "title": "Routineid"
+                    },
+                    "date": {
+                        "type": "string",
+                        "title": "Date"
+                    },
+                    "completed": {
+                        "type": "boolean",
+                        "title": "Completed"
+                    },
+                    "progress": {
+                        "items": {
+                            "$ref": "#/components/schemas/Progress"
+                        },
+                        "type": "array",
+                        "title": "Progress"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "userId",
+                    "routineId",
+                    "date",
+                    "completed",
+                    "progress"
+                ],
+                "title": "WorkoutSession",
+                "example": {
+                    "completed": true,
+                    "date": "2025-12-07T10:00:00",
+                    "id": "session123",
+                    "progress": [],
+                    "routineId": "routine123",
+                    "userId": "user123"
+                }
+            }
+        }
+    }
+}
