@@ -1,4 +1,4 @@
-import { User, Routine, Progress, WorkoutSession, Exercise, LoginRequest, LoginResponse } from '@/types';
+import { User, Routine, Progress, WorkoutSession, Exercise, LoginResponse } from '@/types';
 import { users } from '@/data/users';
 import { routines } from '@/data/routines';
 import { exercisesCatalog } from '@/data/exercises';
@@ -691,7 +691,19 @@ export const api = {
     }
   },
 
-  getUserNameById(userId: string): string {
+  async getUserNameById(userId: string): Promise<string> {
+    // Intentar obtener del API primero
+    if (USE_API) {
+      try {
+        const user = await this.getUserById(userId);
+        if (user) {
+          return user.name || user.username;
+        }
+      } catch (error) {
+        console.error('Error getting user name:', error);
+      }
+    }
+
     // Fallback local para obtener nombre de usuario
     const user = users.find(u => u.id === userId);
     return user?.name || user?.username || 'Usuario desconocido';

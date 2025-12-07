@@ -31,6 +31,26 @@ export const RoutineFormModal: React.FC<RoutineFormModalProps> = ({
   const [dayNumber, setDayNumber] = useState(1);
   const [selectedExercises, setSelectedExercises] = useState<RoutineExercise[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [userNames, setUserNames] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    // Precargar nombres de usuarios para ejercicios compartidos
+    const loadUserNames = async () => {
+      const uniqueCreators = [...new Set(
+        exercises
+          .filter(e => e.createdBy && e.createdBy !== userId)
+          .map(e => e.createdBy!)
+      )];
+
+      const names: Record<string, string> = {};
+      for (const creatorId of uniqueCreators) {
+        names[creatorId] = await api.getUserNameById(creatorId);
+      }
+      setUserNames(names);
+    };
+
+    loadUserNames();
+  }, [exercises, userId]);
 
   const filteredExercises = exercises.filter(ex =>
     ex.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -104,7 +124,7 @@ export const RoutineFormModal: React.FC<RoutineFormModalProps> = ({
   const getUserName = (createdBy?: string) => {
     if (!createdBy) return null;
     if (createdBy === userId) return currentUserName;
-    return api.getUserNameById(createdBy);
+    return userNames[createdBy] || 'Cargando...';
   };
 
   return (

@@ -42,6 +42,7 @@ export default function SettingsPage() {
   const [showExerciseForm, setShowExerciseForm] = useState(false);
   const [editingExercise, setEditingExercise] = useState<Exercise | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [userNames, setUserNames] = useState<Record<string, string>>({});
 
   const {
     initializeModel,
@@ -66,6 +67,19 @@ export default function SettingsPage() {
         // Filtrar solo ejercicios del usuario
         const userExercises = allExercises.filter(e => e.createdBy === user.id);
         setExercises(userExercises);
+
+        // Cargar nombres de usuarios para ejercicios compartidos
+        const uniqueCreators = [...new Set(
+          userExercises
+            .filter(e => e.createdBy && e.createdBy !== user.id)
+            .map(e => e.createdBy!)
+        )];
+
+        const names: Record<string, string> = {};
+        for (const creatorId of uniqueCreators) {
+          names[creatorId] = await api.getUserNameById(creatorId);
+        }
+        setUserNames(names);
 
         // Cargar equipamiento
         const savedEquipment = localStorage.getItem(`equipment-${user.id}`);
@@ -337,7 +351,7 @@ export default function SettingsPage() {
                         )}
                         {exercise.createdBy && exercise.createdBy !== user?.id && (
                           <Badge variant="info" className="text-xs">
-                            Compartido por {api.getUserNameById(exercise.createdBy)}
+                            Compartido por {userNames[exercise.createdBy] || 'Cargando...'}
                           </Badge>
                         )}
                       </div>
