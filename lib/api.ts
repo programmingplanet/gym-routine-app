@@ -4,7 +4,8 @@ import { routines } from '@/data/routines';
 import { exercisesCatalog } from '@/data/exercises';
 
 // API configuration
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+// Use Next.js API routes which will proxy to FastAPI backend
+const API_BASE_URL = '/api';  // Next.js API routes
 const USE_API = process.env.NEXT_PUBLIC_USE_API === 'true';
 
 // Helper function to get auth token

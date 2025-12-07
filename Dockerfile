@@ -16,11 +16,11 @@ WORKDIR /app
 
 # Declarar build arguments
 ARG NEXT_PUBLIC_USE_API=true
-ARG NEXT_PUBLIC_API_URL=http://gym-routine-api:8000
+ARG BACKEND_PRIVATE_URL=http://gym-routine-api:8000
 
 # Convertir build args a environment variables para el build
 ENV NEXT_PUBLIC_USE_API=${NEXT_PUBLIC_USE_API}
-ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+ENV BACKEND_PRIVATE_URL=${BACKEND_PRIVATE_URL}
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
@@ -36,15 +36,14 @@ WORKDIR /app
 
 # Declarar build arguments para runtime
 ARG NEXT_PUBLIC_USE_API=true
-ARG NEXT_PUBLIC_API_URL=http://gym-routine-api:8000
-
+ARG BACKEND_PRIVATE_URL=http://gym-routine-api:8000
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
 # Configurar variables de API en runtime
 ENV NEXT_PUBLIC_USE_API=${NEXT_PUBLIC_USE_API}
-ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+ENV BACKEND_PRIVATE_URL=${BACKEND_PRIVATE_URL}
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
