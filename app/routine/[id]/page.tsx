@@ -32,9 +32,10 @@ export default function RoutinePage() {
 
   useEffect(() => {
     const loadData = async () => {
-      const [routineData, exercises] = await Promise.all([
+      const [routineData, exercises, _muscleGroups] = await Promise.all([
         api.getRoutineById(routineId),
-        api.getExercises()
+        api.getExercises(),
+        api.getMuscleGroups() // Cargar grupos musculares para llenar el cache
       ]);
 
       if (routineData) {
