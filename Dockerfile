@@ -15,8 +15,8 @@ FROM base AS builder
 WORKDIR /app
 
 # Declarar build arguments
-ARG NEXT_PUBLIC_USE_API=false
-ARG NEXT_PUBLIC_API_URL=http://localhost:3001
+ARG NEXT_PUBLIC_USE_API=true
+ARG NEXT_PUBLIC_API_URL=http://gym-routine-api:8000
 
 # Convertir build args a environment variables para el build
 ENV NEXT_PUBLIC_USE_API=${NEXT_PUBLIC_USE_API}
@@ -35,8 +35,9 @@ FROM base AS runner
 WORKDIR /app
 
 # Declarar build arguments para runtime
-ARG NEXT_PUBLIC_USE_API=false
-ARG NEXT_PUBLIC_API_URL=http://localhost:3001
+ARG NEXT_PUBLIC_USE_API=true
+ARG NEXT_PUBLIC_API_URL=http://gym-routine-api:8000
+
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
