@@ -43,6 +43,7 @@ export default function SettingsPage() {
   const [editingExercise, setEditingExercise] = useState<Exercise | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [userNames, setUserNames] = useState<Record<string, string>>({});
+  const [muscleGroups, setMuscleGroups] = useState<import('@/types').MuscleGroup[]>([]);
 
   const {
     initializeModel,
@@ -63,6 +64,10 @@ export default function SettingsPage() {
   useEffect(() => {
     const loadData = async () => {
       if (user) {
+        // Cargar grupos musculares desde el API
+        const groups = await api.getMuscleGroups();
+        setMuscleGroups(groups);
+
         const allExercises = await api.getExercises(user.id);
         // Filtrar solo ejercicios del usuario
         const userExercises = allExercises.filter(e => e.createdBy === user.id);
@@ -90,6 +95,15 @@ export default function SettingsPage() {
     };
     loadData();
   }, [user]);
+
+  const getMuscleGroupName = (muscleGroupId: string): string => {
+    // Buscar primero en los grupos cargados del API
+    const group = muscleGroups.find(g => g.id === muscleGroupId);
+    if (group) return group.name;
+
+    // Fallback a la función del API (que usa grupos por defecto)
+    return api.getMuscleGroupName(muscleGroupId);
+  };
 
   const handleAddEquipment = () => {
     if (newEquipment.trim() && !equipment.includes(newEquipment.trim())) {
@@ -343,7 +357,7 @@ export default function SettingsPage() {
                         {exercise.name}
                       </h3>
                       <p className="text-sm text-gray-600 dark:text-gray-400">
-                        {exercise.muscleGroups?.map(id => api.getMuscleGroupName(id)).join(', ')}
+                        {exercise.muscleGroups?.map(id => getMuscleGroupName(id)).join(', ')}
                       </p>
                       <div className="flex gap-2 mt-1">
                         {exercise.isShared && (
