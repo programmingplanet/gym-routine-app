@@ -31,7 +31,19 @@ export const RoutineFormModal: React.FC<RoutineFormModalProps> = ({
   const [dayNumber, setDayNumber] = useState(1);
   const [selectedExercises, setSelectedExercises] = useState<RoutineExercise[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedMuscleGroupFilter, setSelectedMuscleGroupFilter] = useState<string>('');
   const [userNames, setUserNames] = useState<Record<string, string>>({});
+  const [muscleGroups, setMuscleGroups] = useState<import('@/types').MuscleGroup[]>([]);
+
+  useEffect(() => {
+    // Cargar grupos musculares
+    const loadMuscleGroups = async () => {
+      const groups = await api.getMuscleGroups();
+      setMuscleGroups(groups);
+    };
+
+    loadMuscleGroups();
+  }, []);
 
   useEffect(() => {
     // Precargar nombres de usuarios para ejercicios compartidos
@@ -52,10 +64,17 @@ export const RoutineFormModal: React.FC<RoutineFormModalProps> = ({
     loadUserNames();
   }, [exercises, userId]);
 
-  const filteredExercises = exercises.filter(ex =>
-    ex.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    ex.muscleGroups?.some(mg => mg.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+  const filteredExercises = exercises.filter(ex => {
+    // Filtrar por término de búsqueda
+    const matchesSearch = ex.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      ex.muscleGroups?.some(mg => api.getMuscleGroupName(mg).toLowerCase().includes(searchTerm.toLowerCase()));
+
+    // Filtrar por grupo muscular seleccionado
+    const matchesMuscleGroup = !selectedMuscleGroupFilter ||
+      ex.muscleGroups?.includes(selectedMuscleGroupFilter);
+
+    return matchesSearch && matchesMuscleGroup;
+  });
 
   const handleAddExercise = (exercise: Exercise) => {
     const newRoutineExercise: RoutineExercise = {
@@ -170,8 +189,29 @@ export const RoutineFormModal: React.FC<RoutineFormModalProps> = ({
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder="Buscar ejercicios..."
-                  className="mb-4"
+                  className="mb-3"
                 />
+
+                {/* Filtro por grupo muscular */}
+                <div className="mb-4">
+                  <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+                    Filtrar por Grupo Muscular
+                  </label>
+                  <select
+                    value={selectedMuscleGroupFilter}
+                    onChange={(e) => setSelectedMuscleGroupFilter(e.target.value)}
+                    className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600
+                      bg-white dark:bg-gray-800 text-gray-900 dark:text-white
+                      focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="">Todos los grupos musculares</option>
+                    {muscleGroups.map((group) => (
+                      <option key={group.id} value={group.id}>
+                        {group.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
                 <div className="space-y-3 max-h-96 overflow-y-auto">
                   {filteredExercises.map((exercise) => {
                     const isAdded = selectedExercises.some(ex => ex.exerciseId === exercise.id);
