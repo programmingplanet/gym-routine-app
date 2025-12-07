@@ -669,5 +669,31 @@ export const api = {
       { id: 'abdomen', name: 'Abdomen' },
       { id: 'cardio', name: 'Cardio' },
     ];
+  },
+
+  // Usuarios
+  async getUserById(userId: string): Promise<User | null> {
+    if (USE_API) {
+      try {
+        return apiCall<User>(`/users/${userId}`);
+      } catch (error) {
+        console.error('Get user error:', error);
+        return null;
+      }
+    } else {
+      // Fallback to local data
+      const user = users.find(u => u.id === userId);
+      if (user) {
+        const { password, ...userWithoutPassword } = user;
+        return userWithoutPassword as User;
+      }
+      return null;
+    }
+  },
+
+  getUserNameById(userId: string): string {
+    // Fallback local para obtener nombre de usuario
+    const user = users.find(u => u.id === userId);
+    return user?.name || user?.username || 'Usuario desconocido';
   }
 };

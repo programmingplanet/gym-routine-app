@@ -8,6 +8,7 @@ import { Badge } from '../atoms/Badge';
 import { Exercise, Routine, RoutineExercise } from '@/types';
 import { X, Plus, Trash2, ChevronUp, ChevronDown } from 'lucide-react';
 import Image from 'next/image';
+import { api } from '@/lib/api';
 
 interface RoutineFormModalProps {
   exercises: Exercise[];
@@ -102,7 +103,8 @@ export const RoutineFormModal: React.FC<RoutineFormModalProps> = ({
   const getExerciseById = (id: string) => exercises.find(e => e.id === id);
   const getUserName = (createdBy?: string) => {
     if (!createdBy) return null;
-    return createdBy === userId ? currentUserName : 'Otro usuario';
+    if (createdBy === userId) return currentUserName;
+    return api.getUserNameById(createdBy);
   };
 
   return (

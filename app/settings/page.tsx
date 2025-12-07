@@ -337,7 +337,7 @@ export default function SettingsPage() {
                         )}
                         {exercise.createdBy && exercise.createdBy !== user?.id && (
                           <Badge variant="info" className="text-xs">
-                            Compartido por {exercise.createdBy === '1' ? 'Lesly' : 'John'}
+                            Compartido por {api.getUserNameById(exercise.createdBy)}
                           </Badge>
                         )}
                       </div>
