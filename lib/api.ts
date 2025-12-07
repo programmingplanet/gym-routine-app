@@ -8,6 +8,9 @@ import { exercisesCatalog } from '@/data/exercises';
 const API_BASE_URL = '/api';  // Next.js API routes
 const USE_API = process.env.NEXT_PUBLIC_USE_API === 'true';
 
+// Cache de grupos musculares
+let muscleGroupsCache: import('@/types').MuscleGroup[] | null = null;
+
 // Helper function to get auth token
 const getAuthToken = (): string | null => {
   if (typeof window === 'undefined') return null;
@@ -643,16 +646,27 @@ export const api = {
 
   // Muscle Groups
   async getMuscleGroups(): Promise<import('@/types').MuscleGroup[]> {
+    // Si ya tenemos cache, retornarlo
+    if (muscleGroupsCache) {
+      return muscleGroupsCache;
+    }
+
     if (USE_API) {
       try {
-        return apiCall<import('@/types').MuscleGroup[]>('/muscle-groups/');
+        const groups = await apiCall<import('@/types').MuscleGroup[]>('/muscle-groups/');
+        muscleGroupsCache = groups; // Guardar en cache
+        return groups;
       } catch (error) {
         console.error('Get muscle groups error:', error);
         // Return default muscle groups on error
-        return this.getDefaultMuscleGroups();
+        const defaultGroups = this.getDefaultMuscleGroups();
+        muscleGroupsCache = defaultGroups;
+        return defaultGroups;
       }
     } else {
-      return this.getDefaultMuscleGroups();
+      const defaultGroups = this.getDefaultMuscleGroups();
+      muscleGroupsCache = defaultGroups;
+      return defaultGroups;
     }
   },
 
@@ -672,6 +686,13 @@ export const api = {
   },
 
   getMuscleGroupName(muscleGroupId: string): string {
+    // Usar cache si existe
+    if (muscleGroupsCache) {
+      const group = muscleGroupsCache.find(g => g.id === muscleGroupId);
+      if (group) return group.name;
+    }
+
+    // Fallback a grupos por defecto
     const groups = this.getDefaultMuscleGroups();
     const group = groups.find(g => g.id === muscleGroupId);
     return group?.name || muscleGroupId;
