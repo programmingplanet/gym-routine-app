@@ -9,6 +9,7 @@ import { Button } from '../atoms/Button';
 import { Badge } from '../atoms/Badge';
 import { X, CheckCircle, Trash2 } from 'lucide-react';
 import Image from 'next/image';
+import { api } from '@/lib/api';
 
 interface WorkoutTrackerProps {
   routineExercises: RoutineExercise[];
@@ -121,7 +122,7 @@ export const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
               <div className="mb-6">
                 <div className="flex items-center gap-2 mb-4">
                   {selectedExercise.muscleGroups && selectedExercise.muscleGroups.map((muscleGroup) => (
-                    <Badge key={muscleGroup} variant="info">{muscleGroup}</Badge>
+                    <Badge key={muscleGroup} variant="info">{api.getMuscleGroupName(muscleGroup)}</Badge>
                   ))}
                   <Badge variant="primary">{selectedRoutineEx.sets} series</Badge>
                   <Badge variant="success">{selectedRoutineEx.reps} reps</Badge>

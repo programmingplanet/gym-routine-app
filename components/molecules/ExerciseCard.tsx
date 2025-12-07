@@ -3,6 +3,7 @@ import { Card } from '../atoms/Card';
 import { Badge } from '../atoms/Badge';
 import { Exercise, RoutineExercise } from '@/types';
 import Image from 'next/image';
+import { api } from '@/lib/api';
 
 interface ExerciseCardProps {
   exercise: Exercise;
@@ -35,7 +36,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({ exercise, routineExe
         </h3>
         <div className="flex items-center gap-2 flex-wrap">
           {exercise.muscleGroups?.map((mg) => (
-            <Badge key={mg} variant="info">{mg}</Badge>
+            <Badge key={mg} variant="info">{api.getMuscleGroupName(mg)}</Badge>
           ))}
           {routineExercise && (
             <>

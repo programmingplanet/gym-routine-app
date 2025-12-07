@@ -197,7 +197,7 @@ export const RoutineFormModal: React.FC<RoutineFormModalProps> = ({
                           <div className="flex items-center gap-2 mt-1">
                             {exercise.muscleGroups?.map((mg) => (
                               <Badge key={mg} variant="info" className="text-xs">
-                                {mg}
+                                {api.getMuscleGroupName(mg)}
                               </Badge>
                             ))}
                             {sharedByName && (

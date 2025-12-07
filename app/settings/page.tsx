@@ -343,7 +343,7 @@ export default function SettingsPage() {
                         {exercise.name}
                       </h3>
                       <p className="text-sm text-gray-600 dark:text-gray-400">
-                        {exercise.muscleGroups?.join(', ')}
+                        {exercise.muscleGroups?.map(id => api.getMuscleGroupName(id)).join(', ')}
                       </p>
                       <div className="flex gap-2 mt-1">
                         {exercise.isShared && (

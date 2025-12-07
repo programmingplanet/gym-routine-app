@@ -671,6 +671,12 @@ export const api = {
     ];
   },
 
+  getMuscleGroupName(muscleGroupId: string): string {
+    const groups = this.getDefaultMuscleGroups();
+    const group = groups.find(g => g.id === muscleGroupId);
+    return group?.name || muscleGroupId;
+  },
+
   // Usuarios
   async getUserById(userId: string): Promise<User | null> {
     if (USE_API) {
